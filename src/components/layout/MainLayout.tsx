@@ -1,16 +1,51 @@
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, MenuProps } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { createElement } from 'react';
 const MainLayout = () => {
 
-    const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
-        (icon, index) => ({
-          key: String(index + 1),
-          icon:createElement(icon),
-          label: `nav ${index + 1}`,
-        }),
-      );
+    // const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
+    //     (icon, index) => ({
+    //       key: String(index + 1),
+    //       icon:createElement(icon),
+    //       label: `nav ${index + 1}`,
+    //     }),
+    //   );
+    const items:MenuProps['items'] = [
+        {
+            key:'1',
+            label:'User'
+        },
+        {
+            key:'2',
+            label:'Profile'
+        },
+        {
+            key:'3',
+            label:'Dashboard'
+        },
+        {
+            key:'4',
+            label:'User Management',
+            children:[
+                {
+                    key:'44',
+                    label:'Create admin',
+                },
+                {
+                    key:'45',
+                    label:'Create student',
+                },
+                {
+                    key:'46',
+                    label:'Create Faculties',
+                },
+            ]
+            
+        },
+
+        
+    ]
     return (
         <div>
               <Layout style={{height:'100vh'}}>
@@ -24,18 +59,17 @@ const MainLayout = () => {
           console.log(collapsed, type);
         }}
       >
-        <div className="demo-logo-vertical" />
+        <div style={{color:'white', height:'3rem', display:'flex', justifyContent:'center', alignItems:'center'}} >
+           <h1>Ph Management</h1>
+        </div>
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={items} />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, }} />
         <Content style={{ margin: '24px 16px 0' }}>
-          <div
-            style={{
+          <div style={{
               padding: 24,
-              minHeight: 360,
-             
-            }}
+              minHeight: 360,}}
           >
             The main content should go here
           </div>
