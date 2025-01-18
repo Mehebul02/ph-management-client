@@ -1,8 +1,7 @@
-import { Layout, Menu, MenuProps } from 'antd';
+import { Layout, Menu, } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { createElement } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import {  Outlet } from 'react-router-dom';
+import { adminSidebarItem } from '../../routes/admin.routes';
 const MainLayout = () => {
 
   // const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
@@ -12,35 +11,35 @@ const MainLayout = () => {
   //       label: `nav ${index + 1}`,
   //     }),
   //   );
-  const items: MenuProps['items'] = [
+  // const items: MenuProps['items'] = [
 
-    {
-      key: 'Dashboard',
-      label: <NavLink to='/admin/dashboard'>Dashboard</NavLink>
-    },
-    {
-      key: 'User Management',
-      label: 'User Management',
-      children: [
-        {
-          key: 'Create Admin',
-          label: <NavLink to='/admin/create-admin'>Create Admin</NavLink>,
-        },
-        {
-          key: 'Create student',
-          label: <NavLink to='/admin/create-student'>Create Student</NavLink>,
-        },
-        {
-          key: 'Create faculty',
-          label: <NavLink to='/admin/create-faculty'>Create Faculty</NavLink>,
-        },
+  //   {
+  //     key: 'Dashboard',
+  //     label: <NavLink to='/admin/dashboard'>Dashboard</NavLink>
+  //   },
+  //   {
+  //     key: 'User Management',
+  //     label: 'User Management',
+  //     children: [
+  //       {
+  //         key: 'Create Admin',
+  //         label: <NavLink to='/admin/create-admin'>Create Admin</NavLink>,
+  //       },
+  //       {
+  //         key: 'Create student',
+  //         label: <NavLink to='/admin/create-student'>Create Student</NavLink>,
+  //       },
+  //       {
+  //         key: 'Create faculty',
+  //         label: <NavLink to='/admin/create-faculty'>Create Faculty</NavLink>,
+  //       },
 
-      ]
+  //     ]
 
-    },
+  //   },
 
 
-  ]
+  // ]
   return (
     <div>
       <Layout style={{ height: '100vh' }}>
@@ -57,7 +56,7 @@ const MainLayout = () => {
           <div style={{ color: 'white', height: '3rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
             <h1>Ph Management</h1>
           </div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={items} />
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={adminSidebarItem} />
         </Sider>
         <Layout>
           <Header style={{ padding: 0, }} />
