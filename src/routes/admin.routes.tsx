@@ -42,9 +42,18 @@ const adminPaths =[
                 path:'create-faculty',
                 element:<CreateFaculty/>
             },
+            {
+                name:'Create Member',
+                path:'create-member',
+                element:<CreateFaculty/>
+            },
         ]
     }
 ]
+
+
+
+// #Programatical way 
 
 export const adminSidebarItem = adminPaths.reduce((acc:TSidebarItem[],item)=>{
     if(item.path && item.name){
