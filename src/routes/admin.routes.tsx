@@ -13,7 +13,7 @@ type TRoute ={
 const adminPaths =[
     {
         name:'Dashboard',
-        path:'/admin/dashboard',
+        path:'dashboard',
         element:<AdminDashboard/>
     },
     {
@@ -21,17 +21,17 @@ const adminPaths =[
         children:[
             {
                 name:'Create Admin',
-                path:'/admin/create-admin',
+                path:'create-admin',
                 element:<CreateAdmin/>
             },
             {
                 name:'Create Student',
-                path:'/admin/create-student',
+                path:'create-student',
                 element:<CreateStudent/>
             },
             {
                 name:'Create Faculty',
-                path:'/admin/create-faculty',
+                path:'create-faculty',
                 element:<CreateFaculty/>
             },
         ]
@@ -39,7 +39,7 @@ const adminPaths =[
 ]
 
 
-const adminRoutes = adminPaths.reduce((acc:TRoute[], item) => {
+export const adminRoutes = adminPaths.reduce((acc:TRoute[], item) => {
     if (item.path && item.element) {
         acc.push({
             path: item.path,
