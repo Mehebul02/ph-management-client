@@ -36,7 +36,20 @@ const newArray = adminPaths.reduce((acc,item)=>{
       })
     }
 
+    if(item.children){
+        
+            acc.push({
+                key:item.name,
+                label:"NavLink",
+                children:item.children.map((child)=>({
+                    key:child.name,
+                    label:'Navlink'
+                }))
+            })
+        
+    }
+
     return acc
 },[])
 
-console.log(newArray);
+console.log(JSON.stringify(newArray));
