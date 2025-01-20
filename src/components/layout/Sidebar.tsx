@@ -7,28 +7,31 @@ import { studentPath } from "../../routes/student.routes";
 const { Sider } = Layout;
 
 const userRole = {
-    ADMIN: 'admin',
-    FACULTY: 'faculty',
-    STUDENT: 'student'
+    ADMIN:'admin',
+    FACULTY:'faculty',
+    STUDENT:'student'
 }
 
 const Sidebar = () => {
-    const role = 'faculty'
-    let sidebarItems;
+    const role ='faculty'
+    let sidebarItems
+
 
     switch (role) {
         case userRole.ADMIN:
-            sidebarItems = sidebarItemGenerator(adminPaths, userRole.ADMIN)
+        sidebarItems = sidebarItemGenerator(adminPaths,userRole.ADMIN)
             break;
         case userRole.FACULTY:
-            sidebarItems = sidebarItemGenerator(facultyPath, userRole.FACULTY)
+        sidebarItems = sidebarItemGenerator(facultyPath,userRole.FACULTY)
             break;
         case userRole.STUDENT:
-            sidebarItems = sidebarItemGenerator(studentPath, userRole.STUDENT)
+        sidebarItems = sidebarItemGenerator(studentPath,userRole.STUDENT)
             break;
+    
         default:
             break;
     }
+
     return (
         <div>
             <Sider
