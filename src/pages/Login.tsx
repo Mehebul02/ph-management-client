@@ -3,22 +3,29 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useLoginMutation } from '../redux/features/auth/authApi';
 
+import { setUser } from '../redux/features/auth/authSlice';
+import { useAppDispatch } from '../redux/features/hooks';
+
 const Login = () => {
 
-    const { register, handleSubmit } = useForm({defaultValues:{userId:'A-0001', password:'admin123'}})
+
+
+    const dispatch = useAppDispatch()
+    const { register, handleSubmit } = useForm({defaultValues:{userId:'0001', password:'admin12345'}})
 
     const [login, { data, error }] = useLoginMutation()
     console.log("data", data);
     console.log("error", error);
 
-    const onSubmit = (data: any) => {
+    const onSubmit =async(data: any) => {
 
         const userInfo = {
             id: data.userId,
             password: data.password,
         }
-        login(userInfo)
-        console.log(data)
+       const res =await login(userInfo).unwrap()
+       dispatch(setUser({user:{},token:res.data.accessToken}))
+        console.log(res)
     }
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
