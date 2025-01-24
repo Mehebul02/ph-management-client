@@ -1,34 +1,46 @@
-import { Button } from 'antd';
-import React from 'react';
+
 import { useForm } from 'react-hook-form';
 import { useLoginMutation } from '../redux/features/auth/authApi';
 
 import { setUser } from '../redux/features/auth/authSlice';
 import { useAppDispatch } from '../redux/features/hooks';
 import { verifyToken } from '../utils/verifyToken';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const Login = () => {
-
-
-
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const { register, handleSubmit } = useForm({defaultValues:{userId:'0001', password:'admin12345'}})
+    const { register, handleSubmit } = useForm({ defaultValues: { userId: '0001', password: 'admin12345' } })
 
     const [login, { data, error }] = useLoginMutation()
     console.log("data", data);
     console.log("error", error);
 
-    const onSubmit =async(data: any) => {
+    const onSubmit = async (data: any) => {
 
-        const userInfo = {
-            id: data.userId,
-            password: data.password,
+       const tostId = toast.loading('Logging in ')
+
+        try{
+            const userInfo = {
+                id: data.userId,
+                password: data.password,
+            }
+            const res = await login(userInfo).unwrap()
+            const user = verifyToken(res.data.accessToken)
+            console.log(user);
+            dispatch(setUser({ user: user, token: res.data.accessToken }))
+            if (user) {
+                navigate(`/${user.role}/dashboard`);
+            } else {
+                console.error('User is null');
+            }
+            toast.success('Logged is successfully',{id:tostId,duration:2000})
+            console.log(res)
+        }catch(err){
+            console.log(err);
+            toast.error('Something went wrong');
         }
-       const res =await login(userInfo).unwrap()
-       const user = verifyToken(res.data.accessToken)
-       console.log(user);
-       dispatch(setUser({user:user,token:res.data.accessToken}))
-        console.log(res)
     }
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
