@@ -1,8 +1,8 @@
 
-import { useForm } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 import { useLoginMutation } from '../redux/features/auth/authApi';
 
-import { setUser } from '../redux/features/auth/authSlice';
+import { setUser, TUser } from '../redux/features/auth/authSlice';
 import { useAppDispatch } from '../redux/features/hooks';
 import { verifyToken } from '../utils/verifyToken';
 import { useNavigate } from 'react-router-dom';
@@ -17,17 +17,17 @@ const Login = () => {
     console.log("data", data);
     console.log("error", error);
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: FieldValues) => {
 
-       const tostId = toast.loading('Logging in ')
+        const tostId = toast.loading('Logging in ')
 
-        try{
+        try {
             const userInfo = {
                 id: data.userId,
                 password: data.password,
             }
             const res = await login(userInfo).unwrap()
-            const user = verifyToken(res.data.accessToken)
+            const user = verifyToken(res.data.accessToken) as TUser;
             console.log(user);
             dispatch(setUser({ user: user, token: res.data.accessToken }))
             if (user) {
@@ -35,9 +35,9 @@ const Login = () => {
             } else {
                 console.error('User is null');
             }
-            toast.success('Logged is successfully',{id:tostId,duration:2000})
+            toast.success('Logged is successfully', { id: tostId, duration: 2000 })
             console.log(res)
-        }catch(err){
+        } catch (err) {
             console.log(err);
             toast.error('Something went wrong');
         }
