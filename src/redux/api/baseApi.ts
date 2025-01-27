@@ -1,4 +1,4 @@
-import { BaseQueryApi, BaseQueryArg, BaseQueryExtraOptions, BaseQueryFn, createApi, DefinitionType, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { BaseQueryApi, BaseQueryFn, createApi, DefinitionType, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../features/store';
 import { logout, setUser } from '../features/auth/authSlice';
 
