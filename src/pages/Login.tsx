@@ -1,7 +1,6 @@
 
 import { FieldValues, } from 'react-hook-form';
 import { useLoginMutation } from '../redux/features/auth/authApi';
-
 import { setUser, TUser } from '../redux/features/auth/authSlice';
 import { useAppDispatch } from '../redux/features/hooks';
 import { verifyToken } from '../utils/verifyToken';
@@ -14,7 +13,6 @@ const Login = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     // const { register, handleSubmit } = useForm({ defaultValues: { userId: '0001', password: 'admin12345' } })
-
     const [login, { data, error }] = useLoginMutation()
     console.log("data", data);
     console.log("error", error);
@@ -50,24 +48,12 @@ const Login = () => {
             <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
                 <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
                 <PhForm onSubmit={onSubmit} >
-                    {/* className="space-y-4" */}
                     <div>
-                        {/* <label htmlFor="id" className="block text-sm font-jost font-medium text-gray-700">
-                            Id
-                        </label> */}
+                        {/* Custom input  */}
                         <PHInputForm type='text' name='userId' label='Id' placeholder='Enter your id'/>
                     </div>
                     <div>
-                        {/* <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                            Password
-                        </label> */}
-                        {/* <input
-                            type="password"
-                            id="password"
-                            {...register('password', { required: true })}
-                            className="block w-full px-3 py-2 mt-1 text-gray-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="password"
-                        /> */}
+                         {/* Custom input  */}
                         <PHInputForm type='text' name='password' label='Password' placeholder='Enter your password'/>
                     </div>
                     <div>

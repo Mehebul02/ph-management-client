@@ -1,13 +1,17 @@
 import { Input } from "antd";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller} from "react-hook-form";
 
-const PHInputForm = ({ type, name, label, placeholder }) => {
+type TInputForm = {
+    type:string;
+    name:string;
+    label?:string;
+    placeholder?:string;
+}
 
+const PHInputForm = ({ type, name, label, placeholder }:TInputForm) => {
+    
     return <div>  {label && (
-        <label htmlFor={name} className="block text-gray-700">
-            {label}
-        </label>
-    )}
+        <label htmlFor={name} className="block text-gray-700"> {label}</label> )}
         <Controller name={name} render={({ field }) => (
             <Input {...field}
                 type={type}
