@@ -1,8 +1,13 @@
-import { Form, Select, Space } from "antd";
+import { Form, Select } from "antd";
 import { Controller } from "react-hook-form";
 
-const PhSelectForm = ({label, name}) => {
-    
+type TSelectProps={
+    label:string;
+    name:string;
+    options:{value:string, label:string}[]
+}
+
+const PhSelectForm = ({label, name,options}:TSelectProps) => {
     return (
             <Controller
             name={name}
@@ -10,21 +15,13 @@ const PhSelectForm = ({label, name}) => {
                 <Form.Item label={label}>
                 <Select
                   defaultValue="Autumn"
-                  style={{ width: 120 }}
+                  style={{ width: 220 }}
                   {...field}
-                  options={[
-                      { value: 'Autumn', label: 'Autumn' },
-                      { value: 'Summer', label: 'Summer' },
-                      { value: 'Fall', label: 'Fall' },
-                      
-                  ]}
+                  options={options}
               />
             </Form.Item>
             )}
             />
-
-           
-        
     );
 };
 
