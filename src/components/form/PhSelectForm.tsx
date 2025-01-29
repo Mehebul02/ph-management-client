@@ -12,7 +12,7 @@ const PhSelectForm = ({label, name,options,defaultValue}:TSelectProps) => {
     return (
             <Controller
             name={name}
-            render={({field})=>(
+            render={({field,fieldState:{error}})=>(
                 <Form.Item label={label}>
                 <Select
                   defaultValue={defaultValue}
@@ -20,6 +20,7 @@ const PhSelectForm = ({label, name,options,defaultValue}:TSelectProps) => {
                   {...field}
                   options={options}
               />
+              {error && <small className ='text-red-500'>{error.message}</small>}
             </Form.Item>
             )}
             />
