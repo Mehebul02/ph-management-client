@@ -38,10 +38,12 @@ const Sidebar = () => {
     }
 
     return (
-        <div>
+        <div className="">
             <Sider
                 breakpoint="lg"
-                collapsedWidth="0">
+                collapsedWidth="0"
+                style={{ height: '100vh', position: 'sticky', top: '0', left: '0' }}
+                >
                 <div style={{ color: 'white', height: '3rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
                     <h1>Ph Management</h1>
                 </div>
