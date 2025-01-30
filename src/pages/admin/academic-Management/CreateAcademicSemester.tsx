@@ -18,6 +18,7 @@ const CreateAcademicSemester = () => {
     const [addAcademicSemesters] = useAddAcademicSemestersMutation()
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         // const name =nameOptions.find((item)=>item.value === data.name)
+        const toastId = toast.loading('Creating academic semester......')
         const name = semesterOptions[Number(data.name) - 1].label
         const semesterData = {
             name,
@@ -28,13 +29,15 @@ const CreateAcademicSemester = () => {
         }
         try {
             const res = await addAcademicSemesters(semesterData)
-            console.log(res);
-            toast.success('Academic semester is created successfully')
+           if(res.error){
+            toast.error(res.error.data.message,{id:toastId})
+           }else{
+            toast.success('Academic semester is created successfully',{id:toastId})
+           }
 
         } catch (err) {
             console.log(err);
-            toast.error('Failed to create academic semester')
-
+            toast.error('Failed to create academic semester',{id:toastId})
         }
     }
 
