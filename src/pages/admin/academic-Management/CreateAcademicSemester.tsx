@@ -6,14 +6,17 @@ import { semesterOptions } from "../../../constrants/semester";
 import { monthOptions } from "../../../constrants/global";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { academicSemesterSchema } from "../../../schemas/academicManagement.Schemas";
+import { useAddAcademicSemestersMutation } from "../../../redux/features/admin/academicManagement.Api";
+import { toast } from "sonner";
 const currentYear = new Date().getFullYear()
 const yearOptions = [0, 1, 2, 3, 4].map(number => ({
-    value: currentYear + number,
-    label: currentYear + number
+    value:String( currentYear + number),
+    label: String(currentYear + number)
 }))
 
 const CreateAcademicSemester = () => {
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const [addAcademicSemesters] = useAddAcademicSemestersMutation()
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         // const name =nameOptions.find((item)=>item.value === data.name)
         const name = semesterOptions[Number(data.name) - 1].label
         const semesterData = {
@@ -23,8 +26,16 @@ const CreateAcademicSemester = () => {
             startMonth: data.startMonth,
             endMonth: data.endMonth,
         }
-        console.log(semesterData);
-        console.log(data);
+        try {
+            const res = await addAcademicSemesters(semesterData)
+            console.log(res);
+            toast.success('Academic semester is created successfully')
+
+        } catch (err) {
+            console.log(err);
+            toast.error('Failed to create academic semester')
+
+        }
     }
 
     return (
@@ -32,8 +43,8 @@ const CreateAcademicSemester = () => {
 
             <Col span={4}>
                 <PhForm onSubmit={onSubmit} resolver={zodResolver(academicSemesterSchema)}>
-                    <PhSelectForm label='Name' name='name' options={semesterOptions} defaultValue='Autumn' />
-                    <PhSelectForm label='Year' name='year' options={yearOptions} defaultValue={currentYear} />
+                    <PhSelectForm label='Name' name='name' options={semesterOptions}  />
+                    <PhSelectForm label='Year' name='year' options={yearOptions}  />
                     <PhSelectForm label='Start Month' name='startMonth' options={monthOptions} />
                     <PhSelectForm label='End Month' name='endMonth' options={monthOptions} />
                     <Button htmlType="submit">Submit</Button>

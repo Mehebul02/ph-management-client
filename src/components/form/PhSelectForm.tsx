@@ -3,8 +3,8 @@ import { Controller } from "react-hook-form";
 
 type TSelectProps={
     label:string;
-    name:string;
-    options:{value:string | number, label:string |number}[],
+    name:string ;
+    options:{value: string, label:string}[],
     defaultValue?:string| number
 }
 
