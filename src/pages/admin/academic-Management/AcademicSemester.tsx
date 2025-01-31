@@ -7,7 +7,7 @@ import { useState } from "react";
 export type TTableData = Pick<TAcademicSemester, '_id' | 'name' | 'year' | 'startMonth' | 'endMonth'>
 const AcademicSemester = () => {
   const [params, setParams] = useState([])
-  const { data: semesterData } = useGetAllSemestersQuery(undefined)
+  const { data: semesterData } = useGetAllSemestersQuery(params)
   const tableData = semesterData?.data?.map(({ _id, name, startMonth, endMonth, year }) => ({
     _id, name, startMonth, endMonth, year
 
@@ -16,6 +16,7 @@ const AcademicSemester = () => {
   const columns: TableColumnsType<TTableData> = [
     {
       title: 'Name',
+      key: 'name',
       dataIndex: 'name',
       filters: [
         {
@@ -36,9 +37,33 @@ const AcademicSemester = () => {
     },
     {
       title: 'Year',
+      key: 'year',
       dataIndex: 'year',
-
+      filters: [
+      
+        {
+          text: '2025',
+          value: '2025',
+        },
+        {
+          text: '2026',
+          value: '2026',
+        },
+        {
+          text: '2027',
+          value: '2027',
+        },
+        {
+          text: '2028',
+          value: '2028',
+        },
+        {
+          text: '2029',
+          value: '2030',
+        },
+      ],
     },
+
     {
       title: 'Start Month',
       dataIndex: 'startMonth',
@@ -84,7 +109,11 @@ const AcademicSemester = () => {
         queryParams.push({ name: 'name', value: item })
 
       )
-      console.log(queryParams);
+      filters.year?.forEach((item) =>
+        queryParams.push({ name: 'year', value: item })
+
+      )
+      setParams(queryParams)
     }
   };
 
