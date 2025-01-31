@@ -30,9 +30,14 @@ const CreateAcademicSemester = () => {
         }
         try {
             const res = (await addAcademicSemesters(semesterData)) as TResponse;
+            // if(res.data.startMonth !==res.data.endMonth){
+            //     toast.error('same month not exists')
+
+            // }
            if(res.error){
             toast.error(res.error.data.message,{id:toastId})
-           }else{
+           }
+           else{
             toast.success('Academic semester is created successfully',{id:toastId})
            }
 
