@@ -17,8 +17,6 @@ const baseQuery = fetchBaseQuery({
 
   }
 })
-
-
 const baseQueryWithRefresh: BaseQueryFn<FetchArgs, BaseQueryApi, DefinitionType> = async (args, api, extraOptions):Promise<any> => {
   let result = await baseQuery(args, api, extraOptions)
   console.log(result);
