@@ -58,6 +58,8 @@ const CreateStudent = () => {
         // console.log(Object.fromEntries(formData));
     };
 
+   
+
     return (
         <Row gutter={20}>
             <Col span={24}>
@@ -85,6 +87,29 @@ const CreateStudent = () => {
                         <Col xs={24} sm={12} md={8}>
                             <PhSelectForm options={bloodGroupOptions} name="bloogGroup" label="Blood Group" />
                         </Col>
+                        {/* Add more fields as needed */}
+                    </Row>
+                    <Divider>
+                       Contact info
+                    </Divider>
+                    <Row gutter={20}>
+                        <Col xs={24} sm={12} md={8}>
+                            <PHInputForm type="email" name="email" label="Email" />
+                        </Col>
+                        <Col xs={24} sm={12} md={8}>
+                            <PHInputForm type="number" name="contactNo" label="Contact" />
+                        </Col>
+                        <Col xs={24} sm={12} md={8}>
+                            <PHInputForm type="emergencyContactNo" name="emergencyContactNo" label="Emergency Contact" />
+                        </Col>
+                        <Col xs={24} sm={12} md={8}>
+                            <PHInputForm type="presentAddress" name="presentAddress" label="Present Address" />
+                        </Col>
+                        <Col xs={24} sm={12} md={8}>
+                            <PHInputForm type="permanentAddress" name="permanentAddress" label="Permanent Address" />
+                        </Col>
+                        
+                        
                         {/* Add more fields as needed */}
                     </Row>
                     <Button htmlType="submit">Submit</Button>
