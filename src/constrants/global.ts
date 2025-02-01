@@ -13,6 +13,10 @@ export const monthNames = [
     'December',
 ]
 
+export const genders = ['Male', 'Female', 'Other']
+
+export const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', '0+', "0-"]
+
 
 export const monthOptions = monthNames.map((item) => {
     return {
@@ -20,3 +24,13 @@ export const monthOptions = monthNames.map((item) => {
         label: item,
     }
 })
+
+export const gendersOptions = genders?.map((item) => ({
+    value: item.toLowerCase(),
+    label: item,
+}))
+
+export const bloodGroupOptions = bloodGroups?.map((item) => ({
+    value: item,
+    label: item
+}))
