@@ -39,6 +39,14 @@ export const academicManagementApi = baseApi.injectEndpoints({
         getAcademicFaculty:builder.query({
             query:()=>{
                 return{url:'/academic-faculties', method:'GET'}
+            },
+            transformResponse:(response)=>{
+                console.log("Inside the response",response);
+
+                return{
+                    data:response.data,
+                    meta:response.meta
+                }
             }
         })
 
