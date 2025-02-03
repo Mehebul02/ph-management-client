@@ -1,13 +1,12 @@
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
 import PhForm from "../../../components/form/PhForm";
 import PHInputForm from "../../../components/form/PHInputForm";
-import { Button, Col, Divider, Row } from "antd";
+import { Button, Col, Divider, Form, Input, Row } from "antd";
 import PhSelectForm from "../../../components/form/PhSelectForm";
 import { bloodGroupOptions, gendersOptions } from "../../../constrants/global";
 import PHDatePicker from "../../../components/form/PhDatePicker";
-import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.Api";
-
-
+import { useGetAllAcademicDepartmentQuery, useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.Api";
+import { useAddStudentMutation } from "../../../redux/features/admin/userManagement.Api";
 
 const studentDummyData = {
     "password": "student123",
@@ -21,7 +20,7 @@ const studentDummyData = {
         "dateOfBirth": "1990-01-01",
         "bloogGroup": "A+",
 
-        "email": "student2@gmail.com",
+        "email": "mehebul353@gmail.com",
         "contactNo": "1235678",
         "emergencyContactNo": "987-654-3210",
         "presentAddress": "123 Main St, Cityville",
@@ -47,16 +46,32 @@ const studentDummyData = {
 }
 
 const CreateStudent = () => {
+
+    const [addStudent, { data, error }] = useAddStudentMutation()
+    console.log({ data, error });
     const { data: sSemesterData, isLoading } = useGetAllSemestersQuery(undefined)
+
+    const { data: departmentData } = useGetAllAcademicDepartmentQuery(undefined,)
 
     const semesterOptions = sSemesterData?.data?.map((item) => ({
         value: item._id,
-        label:`${item.name} ${item.year}`,
+        label: `${item.name} ${item.year}`,
     }))
 
+    const departmentOptions = departmentData?.data?.map((item) => ({
+        value: item._id,
+        label: item.name
+    }))
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        console.log(data);
+        const studentData = {
+            password: 'student123',
+            student: data
+        }
         const formData = new FormData();
-        formData.append('data', JSON.stringify(data));
+        formData.append('data', JSON.stringify(studentData));
+        formData.append('file',data.image)
+        addStudent(formData)
         console.log(Object.fromEntries(formData));
 
 
@@ -76,7 +91,7 @@ const CreateStudent = () => {
         // "dateOfBirth": "1990-01-01",
         "bloogGroup": "A+",
 
-        "email": "student2@gmail.com",
+       
         "contactNo": "1235678",
         "emergencyContactNo": "987-654-3210",
         "presentAddress": "123 Main St, Cityville",
@@ -96,6 +111,8 @@ const CreateStudent = () => {
             "contactNo": "777-888-9999",
             "address": "789 Pine St, Villageton"
         },
+        "admissionSemester": "65b0104110b74fcbd7a25d92",
+        "academicDepartment": "65b00fb010b74fcbd7a25d8e"
     }
 
 
@@ -126,6 +143,21 @@ const CreateStudent = () => {
                         <Col xs={24} sm={12} md={8}>
                             <PhSelectForm options={bloodGroupOptions} name="bloogGroup" label="Blood Group" />
                         </Col>
+                        <Col xs={24} sm={12} md={8}>
+                        <Controller
+                name="image"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <Form.Item label="Picture">
+                    <Input
+                      type="file"
+                      value={value?.fileName}
+                      {...field}
+                      onChange={(e) => onChange(e.target.files?.[0])}
+                    />
+                  </Form.Item>
+                )}
+              />
+                        </Col>
                         {/* Add more fields as needed */}
                     </Row>
                     <Divider>
@@ -139,7 +171,7 @@ const CreateStudent = () => {
                             <PHInputForm type="number" name="contactNo" label="Contact" />
                         </Col>
                         <Col xs={24} sm={12} md={8}>
-                            <PHInputForm type="number" name="emergencyContactNo" label="Emergency Contact" />
+                            <PHInputForm type="text" name="emergencyContactNo" label="Emergency Contact" />
                         </Col>
                         <Col xs={24} sm={12} md={8}>
                             <PHInputForm type="text" name="presentAddress" label="Present Address" />
@@ -159,7 +191,7 @@ const CreateStudent = () => {
                             <PHInputForm type="text" name="guardian.fatherOccupation" label="Father.Occupation" />
                         </Col>
                         <Col xs={24} sm={12} md={8}>
-                            <PHInputForm type="number" name="guardian.fatherContactNo" label="Father Contact" />
+                            <PHInputForm type="text" name="guardian.fatherContactNo" label="Father Contact" />
                         </Col>
                         <Col xs={24} sm={12} md={8}>
                             <PHInputForm type="text" name="motherName" label="Mother Name" />
@@ -193,15 +225,15 @@ const CreateStudent = () => {
                     </Divider>
                     <Row gutter={20}>
                         <Col xs={24} sm={12} md={8}>
-                            <PhSelectForm 
-                            options={semesterOptions} 
-                            disabled={isLoading}
-                            name="admissionSemester" 
-                            label="Admission Semester"
-                             />
+                            <PhSelectForm
+                                options={semesterOptions}
+                                disabled={isLoading}
+                                name="admissionSemester"
+                                label="Admission Semester"
+                            />
                         </Col>
                         <Col xs={24} sm={12} md={8}>
-                            <PHInputForm type="text" name="localGuardian.address" label="Address" />
+                            <PhSelectForm options={departmentOptions} name="academicDepartment" label="Academic Department" />
                         </Col>
                     </Row>
                     <Button htmlType="submit">Submit</Button>

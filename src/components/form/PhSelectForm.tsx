@@ -5,10 +5,11 @@ type TSelectProps={
     label:string;
     name:string ;
     options:{value: string, label:string}[],
-    defaultValue?:string| number
+    defaultValue?:string| number,
+    disabled?:boolean
 }
 
-const PhSelectForm = ({label, name,options,defaultValue}:TSelectProps) => {
+const PhSelectForm = ({label, name,options,defaultValue,disabled}:TSelectProps) => {
     return (
             <Controller
             name={name}
@@ -20,6 +21,7 @@ const PhSelectForm = ({label, name,options,defaultValue}:TSelectProps) => {
                   {...field}
                   options={options}
                    size="large"
+                   disabled={disabled}
               />
               {error && <small className ='text-red-500'>{error.message}</small>}
             </Form.Item>

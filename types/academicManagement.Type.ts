@@ -15,9 +15,14 @@ export type TAcademicSemester = {
   export type TAcademicFaculty = {
     _id: string;
     name: string;
-    startMonth: string;
-    endMonth: string;
     createdAt: string;
     updatedAt: string;
     __v: number;
-  }
+  };
+  export type TAcademicDepartment = {
+    _id: string;
+    name: string;
+    academicFaculty: TAcademicFaculty;
+    createdAt: string;
+    updatedAt: string;
+  };
