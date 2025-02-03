@@ -1,5 +1,5 @@
 // import { TResponse, TResponseRedux } from "../../../../types/golbal";
-import { TResponseRedux } from "../../../../types/golbal";
+import { TQueryParams, TResponseRedux } from "../../../../types/golbal";
 import { baseApi } from "../../api/baseApi";
 import { TAcademicDepartment, TAcademicFaculty, TAcademicSemester } from '../../../../types/academicManagement.Type'
 
@@ -10,8 +10,8 @@ export const academicManagementApi = baseApi.injectEndpoints({
             query: (args) => {
                 const params = new URLSearchParams()
                 if (args) {
-                    args.forEach(item => {
-                        params.append(item.name, item.value)
+                    args.forEach((item: TQueryParams) => {
+                        params.append(item.name, item.value as string)
                     });
                 }
                 return {
@@ -71,11 +71,11 @@ export const academicManagementApi = baseApi.injectEndpoints({
                 }
             }
         }),
-        addAcademicDepartment:builder.mutation({
-            query:(data)=>({
-                url:'/academic-departments/create-academic-department',
-                method:"POST",
-                body:data
+        addAcademicDepartment: builder.mutation({
+            query: (data) => ({
+                url: '/academic-departments/create-academic-department',
+                method: "POST",
+                body: data
             })
         })
     }),

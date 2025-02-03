@@ -1,89 +1,52 @@
-import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.Api";
-import { Button, Table } from 'antd';
+
+import { Avatar, Button, Image, Space, Table } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
-import { TAcademicSemester } from "../../../../types/academicManagement.Type";
 import { useState } from "react";
 import { TQueryParams } from "../../../../types/golbal";
-export type TTableData = Pick<TAcademicSemester,  'name' | 'year' | 'startMonth' | 'endMonth'>
+import { useGetAllStudentsQuery } from "../../../redux/features/admin/userManagement.Api";
+import { TStudents } from "../../../../types/userManagement.type";
+import '../../../styles/StudentData.css'; // External CSS file
+export type TTableData = Pick<TStudents, 'name' | 'id'>
 const StudentData = () => {
-  const [params, setParams] = useState<TQueryParams[] | undefined>(undefined)
-  const { data: semesterData, isLoading,isFetching } = useGetAllSemestersQuery(params)
-  const tableData = semesterData?.data?.map(({  name, startMonth, endMonth, year }) => ({
-   name, startMonth, endMonth, year
+  const [params, setParams] = useState<TQueryParams[]>([])
+  const { data: semesterData, isLoading, isFetching } = useGetAllStudentsQuery([
+    
+
+    ...params
+
+  ])
+  const tableData = semesterData?.data?.map(({ _id, fullName, id,profileImg }) => ({
+    key: _id,
+    fullName,
+    id,
+    profileImg
   }))
 
   const columns: TableColumnsType<TTableData> = [
     {
       title: 'Name',
-      key: 'name',
-      dataIndex: 'name',
-      filters: [
-        {
-          text: 'Autumn',
-          value: 'Autumn',
-        },
-        {
-          text: 'Fall',
-          value: 'Fall',
-        },
-        {
-          text: 'Summer',
-          value: 'Summer',
-        },
-      ],
+      key: 'fullName',
+      dataIndex: 'fullName',
     },
     {
-      title: 'Year',
-      key: 'year',
-      dataIndex: 'year',
-      filters: [
-      
-        {
-          text: '2025',
-          value: '2025',
-        },
-        {
-          text: '2026',
-          value: '2026',
-        },
-        {
-          text: '2027',
-          value: '2027',
-        },
-        {
-          text: '2028',
-          value: '2028',
-        },
-        {
-          text: '2029',
-          value: '2030',
-        },
-      ],
+      title: 'Roll',
+      key: 'id',
+      dataIndex: 'id',
     },
+    
     {
-      title: 'Start Month',
-      dataIndex: 'startMonth',
-    },
-    {
-      title: 'End Month',
-      dataIndex: 'endMonth',
-    },
-    {
-      title:'Action',
-      key:'X',
-      render:()=>{
-        return <div>  
+      title: 'Action',
+      key: 'X',
+      render: () => {
+        return <Space>
+          <Button>Details</Button>
           <Button>Update</Button>
-          </div>
-      }
+          <Button>Block</Button>
+        </Space>
+      },
+      width:'1%'
     },
-    {
-      title:'Delete',
-      key:'X',
-      render:()=>{
-        return <Button>Delete</Button>
-      }
-    }
+    
   ];
 
   //   const data: DataType[] = [
@@ -116,7 +79,7 @@ const StudentData = () => {
   const onChange: TableProps<TTableData>['onChange'] = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
     if (extra.action === 'filter') {
-      const queryParams:TQueryParams[] = []
+      const queryParams: TQueryParams[] = []
       filters.name?.forEach((item) =>
         queryParams.push({ name: 'name', value: item })
 
@@ -134,11 +97,24 @@ const StudentData = () => {
   // }
   return (
     <div>
+      {tableData?.map((record) => (
+        <div key={record.key} style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
+          <div className="animated-border">
+            <Avatar 
+              src={record.profileImg} 
+              alt={record.fullName} 
+              size={50} 
+              style={{ border: '2px solid white' }} 
+            />
+          </div>
+          <span style={{ fontWeight: 'bold', fontSize: '16px', marginLeft: '10px' }}>{record.fullName}</span>
+        </div>
+      ))}
       <Table<TTableData>
         loading={isFetching}
-       columns={columns} 
-       dataSource={tableData} 
-       onChange={onChange} />
+        columns={columns}
+        dataSource={tableData}
+        onChange={onChange} />
     </div>
   );
 };

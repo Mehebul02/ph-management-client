@@ -1,0 +1,20 @@
+.animated-border {
+    display: inline-block;
+    padding: 2px; 
+    border-radius: 50%;
+    background: linear-gradient(45deg, #ff4d4f, #40a9ff, #73d13d, #ffc53d);
+    background-size: 300% 300%;
+    animation: borderAnimation 4s linear infinite;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .animated-border:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+  }
+  
+  @keyframes borderAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
