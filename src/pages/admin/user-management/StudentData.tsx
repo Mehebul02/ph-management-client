@@ -1,9 +1,9 @@
 
-import { Avatar, Button, Image, Pagination, Space, Table } from 'antd';
+import { Button, Pagination, Space, Table } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import { useState } from "react";
 import { TQueryParams } from "../../../../types/golbal";
-import { useGetAllStudentsQuery, useUpdateStudentMutation } from "../../../redux/features/admin/userManagement.Api";
+import { useGetAllStudentsQuery,  } from "../../../redux/features/admin/userManagement.Api";
 import { TStudents } from "../../../../types/userManagement.type";
 import '../../../styles/StudentData.css'; // External CSS file
 import { Link } from 'react-router-dom';
@@ -11,12 +11,7 @@ export type TTableData = Pick<TStudents, 'fullName' | 'id'>
 const StudentData = () => {
   const [params, setParams] = useState<TQueryParams[]>([])
   const [page, setPage] = useState(1)
-  const [updateStudent] = useUpdateStudentMutation();
-  const updateHandler=(id)=>{
-    // updateStudent(data)
-    console.log(id,'Banga');
-  }
-  console.log(updateStudent);
+
   const { data: studentData, isLoading, isFetching } = useGetAllStudentsQuery([
     { name: 'limit', value: 2 },
     { name: 'page', value: page },
@@ -72,7 +67,11 @@ const StudentData = () => {
           <Link to={`/admin/student/${item.key}`}>
           <Button>Details</Button>
           </Link>
-          <Button onClick={()=>updateHandler(item.key)}>Update</Button>
+          <Link to={`/admin/studentUpdate/${item.key}`}>
+          <Button>Update</Button>
+          </Link>
+          
+          {/* <Button onClick={()=>updateHandler(item.key)}>Update</Button> */}
           <Button>Block</Button>
         </Space>
       },
