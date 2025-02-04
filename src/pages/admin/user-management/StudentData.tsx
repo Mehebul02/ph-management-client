@@ -1,25 +1,39 @@
 
-import { Avatar, Button, Image, Space, Table } from 'antd';
+import { Avatar, Button, Image, Pagination, Space, Table } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import { useState } from "react";
 import { TQueryParams } from "../../../../types/golbal";
-import { useGetAllStudentsQuery } from "../../../redux/features/admin/userManagement.Api";
+import { useGetAllStudentsQuery, useUpdateStudentMutation } from "../../../redux/features/admin/userManagement.Api";
 import { TStudents } from "../../../../types/userManagement.type";
 import '../../../styles/StudentData.css'; // External CSS file
-export type TTableData = Pick<TStudents, 'name' | 'id'>
+import { Link } from 'react-router-dom';
+export type TTableData = Pick<TStudents, 'fullName' | 'id'>
 const StudentData = () => {
   const [params, setParams] = useState<TQueryParams[]>([])
-  const { data: semesterData, isLoading, isFetching } = useGetAllStudentsQuery([
-    
+  const [page, setPage] = useState(1)
+  const [updateStudent] = useUpdateStudentMutation();
+  const updateHandler=(id)=>{
+    // updateStudent(data)
+    console.log(id,'Banga');
+  }
+  console.log(updateStudent);
+  const { data: studentData, isLoading, isFetching } = useGetAllStudentsQuery([
+    { name: 'limit', value: 2 },
+    { name: 'page', value: page },
+    { name: 'sort', value: 'id' },
 
     ...params
 
   ])
-  const tableData = semesterData?.data?.map(({ _id, fullName, id,profileImg }) => ({
+  const metaData = studentData?.meta
+  const tableData = studentData?.data?.map(({ _id, fullName, id, profileImg, contactNo, email,gender }) => ({
     key: _id,
     fullName,
     id,
-    profileImg
+    profileImg,
+    contactNo,
+    email,
+    gender
   }))
 
   const columns: TableColumnsType<TTableData> = [
@@ -33,48 +47,39 @@ const StudentData = () => {
       key: 'id',
       dataIndex: 'id',
     },
-    
+    {
+      title: 'Email',
+      key: 'email',
+      dataIndex: 'email',
+    },
+    {
+      title: 'Contact No',
+      key: 'contactNo',
+      dataIndex: 'contactNo',
+    },
+    {
+      title: 'Gender',
+      key: 'gender',
+      dataIndex: 'gender',
+    },
+
     {
       title: 'Action',
       key: 'X',
-      render: () => {
+      render: (item) => {
+        console.log(item);
         return <Space>
+          <Link to={`/admin/student/${item.key}`}>
           <Button>Details</Button>
-          <Button>Update</Button>
+          </Link>
+          <Button onClick={()=>updateHandler(item.key)}>Update</Button>
           <Button>Block</Button>
         </Space>
       },
-      width:'1%'
+      width: '1%'
     },
-    
-  ];
 
-  //   const data: DataType[] = [
-  //     {
-  //       key: '1',
-  //       name: 'John Brown',
-  //       age: 32,
-  //       address: 'New York No. 1 Lake Park',
-  //     },
-  //     {
-  //       key: '2',
-  //       name: 'Jim Green',
-  //       age: 42,
-  //       address: 'London No. 1 Lake Park',
-  //     },
-  //     {
-  //       key: '3',
-  //       name: 'Joe Black',
-  //       age: 32,
-  //       address: 'Sydney No. 1 Lake Park',
-  //     },
-  //     {
-  //       key: '4',
-  //       name: 'Jim Red',
-  //       age: 32,
-  //       address: 'London No. 2 Lake Park',
-  //     },
-  //   ];
+  ];
 
   const onChange: TableProps<TTableData>['onChange'] = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -97,24 +102,34 @@ const StudentData = () => {
   // }
   return (
     <div>
-      {tableData?.map((record) => (
+      {/* {tableData?.map((record) => (
         <div key={record.key} style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
           <div className="animated-border">
             <Avatar 
               src={record.profileImg} 
               alt={record.fullName} 
-              size={50} 
+              size={70} 
               style={{ border: '2px solid white' }} 
             />
           </div>
-          <span style={{ fontWeight: 'bold', fontSize: '16px', marginLeft: '10px' }}>{record.fullName}</span>
+         <div style={{display:'flex-column', marginLeft:'10px'}}>
+         <span style={{ fontWeight: 'bold', fontSize: '16px', marginLeft: '10px' }}>{record.fullName}</span>
+         <div>Roll: {record.id}</div>
+         </div>
         </div>
-      ))}
+      ))} */}
       <Table<TTableData>
         loading={isFetching}
         columns={columns}
         dataSource={tableData}
-        onChange={onChange} />
+        onChange={onChange}
+        pagination={false}
+      />
+      <Pagination
+        current={page}
+        onChange={(page) => setPage(page)}
+        pageSize={metaData?.limit}
+        total={metaData?.total} />
     </div>
   );
 };

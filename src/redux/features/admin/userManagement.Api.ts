@@ -35,10 +35,20 @@ const userManagementApi = baseApi.injectEndpoints({
                     body: data,
                 }),
             }),
+            updateStudent: builder.mutation({
+                query: ( {id,data} ) => ({
+                    url: `/students/${id}`, 
+                    method: 'PATCH',       
+                    body: data,    
+                }),
+            }),
     
            
     
         }),
 })
 
-export const {useAddStudentMutation, useGetAllStudentsQuery} = userManagementApi
+export const {useAddStudentMutation, 
+    useGetAllStudentsQuery,
+    useUpdateStudentMutation
+} = userManagementApi

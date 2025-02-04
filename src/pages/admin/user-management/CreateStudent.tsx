@@ -7,6 +7,7 @@ import { bloodGroupOptions, gendersOptions } from "../../../constrants/global";
 import PHDatePicker from "../../../components/form/PhDatePicker";
 import { useGetAllAcademicDepartmentQuery, useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.Api";
 import { useAddStudentMutation } from "../../../redux/features/admin/userManagement.Api";
+import { toast } from "sonner";
 
 const studentDummyData = {
     "password": "student123",
@@ -62,8 +63,10 @@ const CreateStudent = () => {
         value: item._id,
         label: item.name
     }))
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<FieldValues> = async(data) => {
+
+        try{
+            console.log(data);
         const studentData = {
             password: 'student123',
             student: data
@@ -73,7 +76,15 @@ const CreateStudent = () => {
         formData.append('file',data.image)
         addStudent(formData)
         console.log(Object.fromEntries(formData));
+toast.success('Student Created is the successfully')
 
+        }
+        catch(err){
+            console.log(err);
+            toast.error('Something wrong')
+
+        }
+        
 
         // this is the for develop
         // just checking purpas 
