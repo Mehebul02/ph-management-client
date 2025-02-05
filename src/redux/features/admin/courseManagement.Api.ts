@@ -20,6 +20,7 @@ const courseManagementApi = baseApi.injectEndpoints({
                     params: params,
                 }
             },
+            providesTags:['semester'],
             transformResponse: (response: TResponseRedux<TSemester[]>) => {
                 console.log('Inside response', response);
                 return {
@@ -34,9 +35,21 @@ const courseManagementApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
+            invalidatesTags:['semester']
+        }),
+        updateRegisteredSemesters: builder.mutation({
+            query: (args) => ({
+                url: `/semester-registrations/${args.id}`,
+                method: 'PATCH',
+                body: args.data,
+            }),
+            invalidatesTags:['semester']
         }),
     })
 })
 
 
-export const {useAddRegisteredSemestersMutation,useGetAllRegisteredSemestersQuery} = courseManagementApi
+export const {useAddRegisteredSemestersMutation,
+    useGetAllRegisteredSemestersQuery,
+    useUpdateRegisteredSemestersMutation,
+} = courseManagementApi

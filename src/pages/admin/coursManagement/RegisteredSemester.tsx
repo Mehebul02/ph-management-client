@@ -1,25 +1,31 @@
 import { Button, Dropdown, Table, Tag } from 'antd';
 import type { TableColumnsType } from 'antd';
-import { useGetAllRegisteredSemestersQuery } from "../../../redux/features/admin/courseManagement.Api";
+import { useGetAllRegisteredSemestersQuery, useUpdateRegisteredSemestersMutation } from "../../../redux/features/admin/courseManagement.Api";
 import moment from 'moment';
 import { TSemester } from '../../../../types/CourseManagement.Type';
+import { useState } from 'react';
 
 const items = [
     {
-        label:'upcoming',
+        label:'Upcoming',
         key:'UPCOMING'
     },
     {
-        label:'ongoing',
+        label:'Ongoing',
         key:'ONGOING'
     },
     {
-        label:'ended',
+        label:'Ended',
         key:'ENDED'
     },
 ]
 export type TTableData = Pick<TSemester,  'startDate'| 'endDate' | 'status'>
 const RegisteredSemester = () => {
+
+    const [semesterId, setSemesterId] = useState('')
+    console.log(semesterId);
+
+    const [updateSemester] = useUpdateRegisteredSemestersMutation()
 
   const { data: semesterData,isFetching } = useGetAllRegisteredSemestersQuery(undefined)
   const tableData = semesterData?.data?.map(({  _id, academicSemester, startDate, endDate,status }) => ({
@@ -31,13 +37,23 @@ const RegisteredSemester = () => {
       status 
   }))
 
-  const handleStatusDropdown =(data)=>{
-    console.log(data);
+  const handleStatusUpdate =(data)=>{
+    console.log('Semester Id :',semesterId );
+    console.log('New Status : :',data.key );
+
+    const updateData = {
+        id:semesterId,
+        data:{
+            status:data.key
+        }
+    }
+
+    updateSemester(updateData)
   }
 
   const menuProps = {
     items,
-    onClick:handleStatusDropdown
+    onClick:handleStatusUpdate
   }
   const columns: TableColumnsType<TTableData> = [
     {
@@ -77,9 +93,9 @@ const RegisteredSemester = () => {
     {
       title:'Action',
       key:'X',
-      render:()=>{
-        return <Dropdown menu={menuProps}>  
-          <Button>Update</Button>
+      render:(item)=>{
+        return <Dropdown menu={menuProps} trigger={['click']}>  
+          <Button onClick={()=> setSemesterId(item.key)}>Update</Button>
           </Dropdown>
       }
     },
