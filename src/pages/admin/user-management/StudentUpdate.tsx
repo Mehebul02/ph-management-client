@@ -7,7 +7,7 @@ const StudentUpdate = () => {
     const { updateId } = useParams(); // Access the updateId from the URL
     const navigate = useNavigate(); // To navigate after update
 
-    const { data: studentData, isLoading, error } = useGetAllStudentsQuery(updateId); // Fetch student data by ID
+    const { data: studentData, isLoading, error } = useGetAllStudentsQuery(['67a114549ded6a70a6105901']); // Fetch student data by ID
     const [updateStudent] = useUpdateStudentMutation(); // Mutation for updating student data
 console.log(studentData)
     // const [formData, setFormData] = useState({
