@@ -2,17 +2,17 @@ import { Button, Col, Flex } from "antd";
 import PhForm from "../../../components/form/PhForm";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import PhSelectForm from "../../../components/form/PhSelectForm";
-import { semesterOptions, semesterStatusOptions } from "../../../constrants/semester";
-import { monthOptions } from "../../../constrants/global";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { academicSemesterSchema } from "../../../schemas/academicManagement.Schemas";
+import { semesterStatusOptions } from "../../../constrants/semester";
 import { toast } from "sonner";
 import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.Api";
 import PHDatePicker from "../../../components/form/PhDatePicker";
 import PHInputForm from "../../../components/form/PHInputForm";
+import { useAddRegisteredSemestersMutation } from "../../../redux/features/admin/courseManagement.Api";
 
 
 const SemesterRegistration = () => {
+
+  const [addSemester] = useAddRegisteredSemestersMutation()
 
     const {data:academicSemester} = useGetAllSemestersQuery([
         {name:'sort', value:'year'}
@@ -34,23 +34,23 @@ const SemesterRegistration = () => {
             maxCredit:Number(data.maxCredit)
         }
         console.log(semesterData);
-        // try {
-        //     const res = (await addAcademicSemesters(semesterData)) as TResponse;
-        //     // if(res.data.startMonth !==res.data.endMonth){
-        //     //     toast.error('same month not exists')
+        try {
+            const res = (await addSemester(semesterData)) as TResponse<any>;
+            // if(res.data.startMonth !==res.data.endMonth){
+            //     toast.error('same month not exists')
 
-        //     // }
-        //    if(res.error){
-        //     toast.error(res.error.data.message,{id:toastId})
-        //    }
-        //    else{
-        //     toast.success('Academic semester is created successfully',{id:toastId})
-        //    }
+            // }
+           if(res.error){
+            toast.error(res.error.data.message,{id:toastId})
+           }
+           else{
+            toast.success('Academic semester is created successfully',{id:toastId})
+           }
 
-        // } catch (err) {
-        //     console.log(err);
-        //     toast.error('Failed to create academic semester',{id:toastId})
-        // }
+        } catch (err) {
+            console.log(err);
+            toast.error('Failed to create academic semester',{id:toastId})
+        }
     }
 
     return (
