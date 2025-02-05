@@ -8,8 +8,8 @@ export type TTableData = Pick<TAcademicSemester,  'name' | 'year' | 'startMonth'
 const AcademicSemester = () => {
   const [params, setParams] = useState<TQueryParams[] | undefined>(undefined)
   const { data: semesterData, isLoading,isFetching } = useGetAllSemestersQuery(params)
-  const tableData = semesterData?.data?.map(({  name, startMonth, endMonth, year }) => ({
-   name, startMonth, endMonth, year
+  const tableData = semesterData?.data?.map(({ _id, name, startMonth, endMonth, year }) => ({
+  key:_id, name, startMonth, endMonth, year
   }))
 
   const columns: TableColumnsType<TTableData> = [
