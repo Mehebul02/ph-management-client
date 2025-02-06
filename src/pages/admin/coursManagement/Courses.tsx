@@ -1,7 +1,6 @@
-import { Button, Dropdown, Table, Tag } from 'antd';
+import { Button, Modal, Table, } from 'antd';
 import type { TableColumnsType } from 'antd';
-import { useGetAllCoursesQuery, useGetAllRegisteredSemestersQuery, useUpdateRegisteredSemestersMutation } from "../../../redux/features/admin/courseManagement.Api";
-import moment from 'moment';
+import { useGetAllCoursesQuery  } from "../../../redux/features/admin/courseManagement.Api";
 import { TSemester } from '../../../../types/CourseManagement.Type';
 import { useState } from 'react';
 
@@ -14,8 +13,6 @@ const Courses = () => {
         title,
         code: `${prefix} ${code}`
     }))
-
-
 
     const columns: TableColumnsType<TTableData> = [
         {
@@ -31,8 +28,8 @@ const Courses = () => {
         {
             title: 'Action',
             key: 'X',
-            render: () => {
-                return <Button>Assign Faculty</Button>
+            render: (item) => {
+                return <AddFacultyModal  />;
             }
         }
     ];
@@ -48,5 +45,36 @@ const Courses = () => {
         </div>
     );
 };
+
+
+
+const AddFacultyModal = () => {
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true);
+      };
+      const handleOk = () => {
+        setIsModalOpen(false);
+      };
+    
+      const handleCancel = () => {
+        setIsModalOpen(false);
+      };
+
+    return (
+        <>
+            <Button onClick={showModal}>Add Faculty</Button>
+            <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+            </Modal>
+
+        </>
+    )
+}
+
+
 
 export default Courses;
