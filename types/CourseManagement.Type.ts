@@ -9,7 +9,7 @@ export type TSemester = {
     maxCredit: number;
     createdAt: string;
     updatedAt: string;
-  };
+  }
   
 
   export type TCourse = {
