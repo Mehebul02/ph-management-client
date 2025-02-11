@@ -6,9 +6,10 @@ type TInputForm = {
     name:string;
     label?:string;
     placeholder?:string;
+    disabled?:boolean
 }
 
-const PHInputForm = ({ type, name, label, placeholder }:TInputForm) => {
+const PHInputForm = ({ type, name, label, placeholder,disabled }:TInputForm) => {
     
     return <div style={{ marginBottom: '20px' }}>  
         {/* <label htmlFor={name} className="block text-gray-700"> {label}</label> )} */}
@@ -17,6 +18,7 @@ const PHInputForm = ({ type, name, label, placeholder }:TInputForm) => {
             <Input {...field}
                 type={type}
                 id={name}
+                disabled={disabled}
                  size="large"
                 className="block w-full px-3 py-2 mt-1 text-gray-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder={placeholder}
